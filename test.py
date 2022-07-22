@@ -1,37 +1,62 @@
-from abc import ABC, ABCMeta, abstractmethod
+import re
+import sqlite3
 
 from libs.vk_api.orm_mode.types import *
-from math import cos, sin
-from enum import Enum
+from db import models
 
 if __name__ == '__main__':
     vk_api = VkApiORM(
-        access_token="vk1.a.vY03McmdPCJzq6KUwIvPgvSejvVnd2cLhZ4xqWN9PfouMUxA5Zt8-K-ja4Wg_gmzBM8lQUnFKc5gaMdTuUqzJX1NcMMi8KCxKKMfkDfDw9fyBo-K8YLcb_qC2_xE5_eC2MOfKi93QnRQJOb92p0D-flrctFScG1cBo-Gnc2llkZjSrAixuKlluX3oIOH53JO")
-    group = vk_api.get_group_by_id(group_id="thecrypt0")
-    list_of_user_objs = group.get_members(sort="id_asc", offset=0, all=False)
-    list_of_users_group_obj = list()
-    for user_obj in list_of_user_objs:
-        try:
-            time.sleep(1)
-            list_of_user_group_obj = user_obj.get_groups()
-        except (UserWasDeletedOrBanned, ProfileIsPrivate, YouDoNotHavePermissionToPerformThisAction):
-            continue
-        list_of_users_group_obj.extend(list_of_user_group_obj)
+        access_token="vk1.a.DX5AdLaeH0agUkRKQFtKHhVk_QrMHPO1BiX9eE78mFM9iVRz3yQoju7hBpc3TJgUXQ1_aEVx-muhqrbh8K7J9o-zs54DBr2cPRvhQFrkCll6BnWlS2GAQvuXcsMFKoqLeXXHuB5E1C-PROTk2Ps4xDT2dPYeSikhz5p1BKsHze5BKzFoB17afuOQF1yTLlp7")
 
-    similarity_groups = dict()
-    for group_obj in list_of_users_group_obj:
-        group_obj_id = group_obj.id
-        for group_id in group_obj_id:
-            if group_id not in similarity_groups:
-                similarity_groups[group_id] = 1
-            else:
-                similarity_groups[group_id] += 1
 
-    sorted_values = sorted(similarity_groups.values(), reverse=True)
-    sorted_simalary_groups = {}
-    for i in sorted_values:
-        for k in similarity_groups.keys():
-            if similarity_groups[k] == i:
-                sorted_simalary_groups[k] = similarity_groups[k]
+    # group = vk_api.get_group_by_id(group_id="thecrypt0")
+    # new_info = group.get_info(fields='discription')
+    # y = group.get_count_of_member()
+    # posts = vk_api.get_wall(owner_id=group.id)
+    # new_info_by_post = posts.get_info(count=3)
+    #
+    #
+    # def get_date_for_datebase(list_posts: list) -> List[tuple]:
+    #     result = list(map(lambda post: tuple(
+    #         (post.date, post.from_id, post.is_favorite, int(str(post.owner_id).replace('-', '')), post.post_type,
+    #          post.comments, post.likes,
+    #          post.reposts, post.views)
+    #     ), list_posts))
+    #     return result
+    #
+    #
+    # # connect = sqlite3.connect('db/database_1.db')
+    # # cursor = connect.cursor()
+    # # cursor.execute("""CREATE TABLE IF NOT EXISTS groups(subsequence INTEGER PRIMARY KEY AUTOINCREMENT, id INTEGER,name TEXT,
+    # # screen_name TEXT, is_closed INTEGER, type TEXT, photo50 BLOB,photo100 BLOB,photo200 BLOB, count_of_members INTEGER)""")
+    # # cursor.execute("""INSERT INTO groups(id,name,screen_name,is_closed,type,photo50,photo100,photo200,
+    # # count_of_members) VALUES(?,?,?,?,
+    # # ?,?,?,?,?)""",
+    # #                [new_info["id"],
+    # #                 new_info["name"],
+    # #                 new_info["screen_name"], new_info["is_closed"], new_info["type"], new_info["photo_50"],
+    # #                 new_info["photo_100"], new_info["photo_200"], group.count_of_members])
+    # #
+    # # cursor.execute("""CREATE TABLE IF NOT EXISTS posts(subsequence INTEGER PRIMARY KEY AUTOINCREMENT, date INTEGER,
+    # # from_id INTEGER, is_favorite TEXT, owner_id INTEGER, count_of_comments INTEGER, count_of_likes INTEGER,
+    # # count_of_views INTEGER,count_of_reposts, post_type TEXT, FOREIGN KEY (owner_id) REFERENCES groups (id))""")
+    # #
+    # # for i in get_date_for_datebase(new_info_by_post):
+    # #     cursor.execute("""INSERT INTO posts(date,from_id,is_favorite,owner_id,post_type,count_of_comments,
+    # #     count_of_likes,count_of_reposts,count_of_views) VALUES (?,?,?,?,?,?,?,?,?)""", i)
+    # # connect.commit()
+    #
+    #
+    # # a = vk_api.get_post_obj(offset=1,count=3)
+    # # for i in a:
+    # #     print(i)
+    #
+    # a = models.PostsOBJ.objects.all()
+    # print(a)
 
-    print(sorted_simalary_groups)
+
+    # connect = sqlite3.connect('db/database_1.db')
+    # cursor = connect.cursor()
+    #
+    # m = cursor.execute(f"SELECT * FROM posts")
+    # print(m.fetchall())

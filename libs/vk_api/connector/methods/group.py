@@ -9,7 +9,8 @@ class Group:
         self.v = 5.131
 
     @check_vk_api_response_for_errors
-    def get_members(self, group_id: int, sort: str, count: int = None, offset: int = 0, filter: str = None) -> dict:
+    def get_members(self, group_id: int, sort: str = "id_asc", count: int = None, offset: int = 0,
+                    filter: str = None) -> dict:
         """
         Возвращает список участников сообщества
 
@@ -115,7 +116,7 @@ class Group:
         return data
 
     @check_vk_api_response_for_errors
-    def get_by_id(self, group_id: str) -> dict:
+    def get_by_id(self, group_id: str, fields: str = None) -> dict:
         """
         Возвращает информацию о заданном сообществе или о нескольких сообществах.
 
@@ -151,6 +152,7 @@ class Group:
                 'access_token': self.access_token,
                 'v': self.v,
                 'group_id': group_id,
+                'fields': fields,
 
             }
         )
